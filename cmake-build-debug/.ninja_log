@@ -1,0 +1,10 @@
+# ninja log v5
+2633	2726	1650472321972916141	Autonomous_Vehicle_Project	c5cd85abbb8e96be
+7	823	1649864491806270970	CMakeFiles/Autonomous_Vehicle_Project.dir/Field.cpp.o	c5279eafa380333e
+7	2632	1650472321871911055	CMakeFiles/Autonomous_Vehicle_Project.dir/main.cpp.o	dbf3de47f1f2aad7
+0	190	1649865470184413613	build.ninja	647e2ccda86be6a9
+7	59	1650138759372999324	CMakeFiles/Autonomous_Vehicle_Project.dir/Node.cpp.o	79f3bdd933ad273c
+7	1138	1649865238840190679	CMakeFiles/Autonomous_Vehicle_Project.dir/GUI.cpp.o	ed1c750cb2c102d
+6	1447	1649865326458215294	CMakeFiles/Autonomous_Vehicle_Project.dir/SpriteHolder.cpp.o	c417af54945aafbe
+7	1946	1650472556200823430	CMakeFiles/Autonomous_Vehicle_Project.dir/main.cpp.o	dbf3de47f1f2aad7
+1946	2038	1650472556297980622	Autonomous_Vehicle_Project	c5cd85abbb8e96be
