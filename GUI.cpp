@@ -4,6 +4,11 @@
 #include "GUI.h"
 #include "SpriteHolder.h"
 
+//constructor
+GUI::GUI() {
+
+}
+
 //adds all sprites to the map that contains the images for the sprites
 void GUI::spriteSetup(Field& field){
     //tiles
@@ -104,7 +109,7 @@ void GUI::drawShapes(RenderWindow& window){
     }
 }
 
-//draws buttons in window
+//draws buttons, text, other objects in window
 void GUI::drawButtons(RenderWindow& window){
     Sprite button = sprites["PDF1"];
     window.draw(button);
@@ -128,7 +133,6 @@ void GUI::drawButtons(RenderWindow& window){
     button = sprites["target"];
     window.draw(button);
 }
-
 void GUI::drawKey(RenderWindow& window, Field& field, Text& text, Font& font){
     sf::RectangleShape dijKey;
     dijKey.setFillColor(Color(255,0,0));
@@ -190,7 +194,6 @@ void GUI::drawKey(RenderWindow& window, Field& field, Text& text, Font& font){
     window.draw(text5);
 
 }
-
 void GUI::drawText(RenderWindow& window, Field& field, Text& text, Font& font){
     text.setFont(font);
     string display = "test";
@@ -207,7 +210,7 @@ void GUI::drawText(RenderWindow& window, Field& field, Text& text, Font& font){
 
 }
 
-////managing GUI events
+////managing GUI events with buttons
 void GUI::pdf1ButtonClicked(RenderWindow& window, Field& field){
     string spriteTo = "PDF1";
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -297,12 +300,16 @@ void GUI::rightClickObstacles(RenderWindow& window, Field& field, Vector2i mouse
 
 }
 
-GUI::GUI() {
-
-}
-
+//clears everything and resets objects
 void GUI::clearEverything(Field& field){
     field.Clear();
+    field.dijkLength = 0;
+    field.breadthLength = 0;
+    field.depthLength = 0;
+    field.dijkTime = 0;
+    field.breadthTime= 0;
+    field.depthTime=0;
+
    for(int i = 0; i < 320; i++){
         for(int j = 0; j < 320; j++){
             nodes[i][j].open = true;

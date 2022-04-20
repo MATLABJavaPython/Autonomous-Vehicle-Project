@@ -1,7 +1,6 @@
 #include "Field.h"
 
-#include <random>
-
+//Field constructor, initializes the size and start and target locations
 Field::Field() {
     max = 319;
     min = 0;
@@ -10,6 +9,7 @@ Field::Field() {
     get<3>(V[from.first][from.second]) = pair<int, int>(301, 30);
 }
 
+//Clears the field and paths
 void Field::Clear() {
     obstacles.clear();
     dijkPath.clear();
@@ -22,50 +22,37 @@ void Field::Clear() {
     }
 }
 
+//Loads in a blank field
 void Field::LoadBlankField() {
     Clear();
-    vector<pair<int, int>> obst;
-    int x = 160;
-    int y = 160;
-    int radius = 50;
-    for (int i = x-radius; i < x+radius; i++){
-        for (int j = y-radius; j < y+radius; j++){
-            if ((i-x)*(i-x)+(j-y)*(j-y) <= radius*radius){
-                obst.emplace_back(pair<int, int>(i,j));
-                get<0>(V[i][j]) = true;
-            }
-        }
-    }
-    obstacles.push_back(obst);
     from = pair<int, int>(300, 30);
     to = pair<int, int>(30, 256);
     get<3>(V[from.first][from.second]) = pair<int, int>(301, 30);
 }
 
+//Loads in predefined field number 3
 void Field::LoadPDF1() {
     Clear();
     AddObst(159, 159, 200, 200);
-    to = pair<int, int>(300, 30);
-    from = pair<int, int>(30, 280);
-    get<3>(V[from.first][from.second]) = pair<int, int>(30, 281);
+    from = pair<int, int>(300, 30);
+    to = pair<int, int>(30, 256);
+    get<3>(V[from.first][from.second]) = pair<int, int>(301, 30);
 }
 
+//Loads in predefined field number 2
 void Field::LoadPDF2() {
     Clear();
     for (int i = 10; i <= 310; i += 50){
-        //cout << "i: " << i;
         for (int j = 10; j <= 310; j += 50){
             AddObst(i, j, 15, 15);
         }
     }
-    //cout << "\nfrom: " << get<0>(V[from.first][from.second]);
-    //cout << "\nto: " << get<0>(V[to.first][to.second]) << endl;
-    //AddObst(160, 160, 320, 20);
     from = pair<int, int>(300, 30);
     to = pair<int, int>(30, 256);
     get<3>(V[from.first][from.second]) = pair<int, int>(301, 30);
 }
 
+//Loads in predefined field number 3
 void Field::LoadPDF3() {
     Clear();
     vector<pair<int, int>> obst;
@@ -179,6 +166,7 @@ void Field::LoadPDF3() {
     get<3>(V[from.first][from.second]) = pair<int, int>(301, 30);
 }
 
+//Adds a rectangular obstacle to the field
 void Field::AddObst(int x, int y, int xSize, int ySize) {
     vector<pair<int, int>> obst;
     for (int i = x-xSize/2; i < x+xSize/2; i++){
@@ -192,11 +180,8 @@ void Field::AddObst(int x, int y, int xSize, int ySize) {
     obstacles.push_back(obst);
 }
 
+//Calculates all paths, and times how long each takes to be calculated
 void Field::FindPaths() {
-    for (int y = 20; y < 300; y++){
-        breadthPath.emplace_back(pair<int, int>(250, y));
-        depthPathMaybeLaterlol.emplace_back(pair<int, int>(y, 15));
-    }
     auto start = high_resolution_clock::now();
     FindDijk();
     auto stop = high_resolution_clock::now();
@@ -263,9 +248,6 @@ void Field::FindDijk() {
     node vert = PQ.top().second;
     get<distance>(V[vert.x][vert.y]) = 0;
 
-    //cout << PQ.top().first << " - " << vert.x << "," << vert.y << endl;//FIXME delete later
-    //cout << get<visited>(V[28][156]) << endl;//FIXME delete later
-
     while(!PQ.empty()){
         vert = PQ.top().second;
         if (vert == to)
@@ -278,7 +260,6 @@ void Field::FindDijk() {
             if (get<distance>(V[vert.x][vert.y]) + weight < get<distance>(V[adj[i].x][adj[i].y])){
                 get<distance>(V[adj[i].x][adj[i].y]) = weight + get<distance>(V[vert.x][vert.y]);
                 get<parent>(V[adj[i].x][adj[i].y]) = vert;
-                //cout << "Distance of " << adj[i].x << "," << adj[i].y << " is: " << get<distance>(V[adj[i].x][adj[i].y]) << endl;
             }
             PQ.push(pair<int, node>(-get<distance>(V[adj[i].first][adj[i].second]), adj[i]));
         }
@@ -294,16 +275,6 @@ void Field::FindDijk() {
         vert = get<parent>(V[vert.x][vert.y]);
     }
 
-    /*cout << "Path nodes: " << endl;
-    for (int i = 0; i < dijkPath.size(); i++){
-        cout << dijkPath[i].x << "," << dijkPath[i].y << endl;
-    }*/
-    /*
-    if (get<visited>(V[1][1])){
-        get<distance>(V[1][1]) = 3;
-        PQ.pop();
-    }*/
-
 #undef visited
 #undef distance
 #undef parent
@@ -312,6 +283,7 @@ void Field::FindDijk() {
 #undef y
 }
 
+//Finds a path using breadth first search
 void Field::FindBreadth() {
 #define visited 1
 #define distance 2
@@ -337,7 +309,6 @@ void Field::FindBreadth() {
         vert = vertices.front();
         if (vert == to)
             break;
-        //cout << "curr: " << vert.x << "," << vert.y << endl;
         vertices.pop();
         vector<node> adj = GetAdj(vert);
 
@@ -365,6 +336,7 @@ void Field::FindBreadth() {
 #undef y
 }
 
+//Finds a (very inefficient) path using depth first search
 void Field::FindDepth() {
 #define visited 1
 #define distance 2
@@ -390,7 +362,6 @@ void Field::FindDepth() {
         vert = vertices.top();
         if (vert == to)
             break;
-        //cout << "curr: " << vert.x << "," << vert.y << endl;
         vertices.pop();
         vector<node> adj = GetAdj(vert);
 
@@ -423,7 +394,6 @@ vector<pair<int, int>> Field::GetAdj(pair<int, int> node) {
     int i = node.first;
     int j = node.second;
     vector<pair<int, int>> adjacent;
-    //cout << "Adj of " << i << "," << j << ":\n";//fixme
     if (CheckValid(i-1,j) && !get<0>(V[i-1][j]))
         adjacent.emplace_back(i-1,j);
     if (CheckValid(i+1,j) && !get<0>(V[i+1][j]))
@@ -432,7 +402,6 @@ vector<pair<int, int>> Field::GetAdj(pair<int, int> node) {
         adjacent.emplace_back(i,j-1);
     if (CheckValid(i,j+1) && !get<0>(V[i][j+1]))
         adjacent.emplace_back(i,j+1);
-    //cout <<endl;//fixme
     shuffle(adjacent.begin(), adjacent.end(), std::mt19937(std::random_device()()));
     return adjacent;
 }
@@ -440,23 +409,18 @@ vector<pair<int, int>> Field::GetAdj(pair<int, int> node) {
 //Checks whether or not a node is accessible (valid)
 bool Field::CheckValid(int i, int j) const{
     if (!(i < min || i > max || j < min || j > max))
-        //if (!get<0>(V[i][j])){
-        //cout << i << "," << j << " ";//fixme
-        return true;
-    //}
+        if (!get<0>(V[i][j])){
+            return true;
+        }
     return false;
 }
 
 //Determines the weight of an edge based on how much of a turn would be needed to reach it
 int Field::GetWeight(pair<int, int> start, pair<int, int> end) {
-    //cout << "cdx calc: " << start.first << "-" << get<3>(V[start.first][start.second]).first <<endl;
     int cdx = start.first - get<3>(V[start.first][start.second]).first;
-    //cout << "cdy calc: " << start.second << "-" << get<3>(V[start.first][start.second]).second <<endl;
     int cdy = start.second - get<3>(V[start.first][start.second]).second;
     int ndx = end.first - start.first;
     int ndy = end.second - start.second;
-    //cout << "xs: " << cdx << "-" << ndx << endl;
-    //cout << "ys: " << cdy << "-" << ndy << endl;
     if (ndx == cdx && ndy == cdy)
         return 1;
     else if (ndx == -1*cdx || ndy == -1*cdy)

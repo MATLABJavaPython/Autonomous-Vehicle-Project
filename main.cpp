@@ -1,9 +1,6 @@
 
 #include <SFML/Graphics.hpp>
 #include<iostream>
-#include<fstream>
-#include<vector>
-#include <sstream>
 #include "Field.h"
 #include "Field.cpp"
 #include "SpriteHolder.h"
@@ -11,12 +8,14 @@
 #include "GUI.h"
 #include "GUI.cpp"
 #include "Node.h"
-//#include "Node.cpp"
+
 
 using namespace std;
 using namespace sf;
 
 int main() {
+
+    //create/set up window, GUI, Field objects
     RenderWindow window(sf::VideoMode(2350, 1500), "Autonomous Pathfinding");
     GUI gui;
     Field field;
@@ -28,7 +27,6 @@ int main() {
     background.setSize(sf::Vector2f(2350, 1500));
 
     //setup font
-
     Font font;
     if(!font.loadFromFile("P3 Images/nasalization-rg.otf")){
         cout << "ERROR loading file "<< endl;
@@ -56,24 +54,17 @@ int main() {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
                 gui.rightClickObstacles(window, field, sf::Mouse::getPosition(window));
             }
-
-
             window.clear();
         }
-
-
             window.draw(background);
             gui.setInitialObstacles(field);
             gui.drawShapes(window);
             gui.drawButtons(window);
             gui.drawText(window, field, text, font);
-           gui.drawKey(window, field, dijKey, font);
+            gui.drawKey(window, field, dijKey, font);
             window.draw(text);
-            //window.draw(dijKey);
             window.display();
         }
-
         SpriteHolder::Clear();
-
     }
 
