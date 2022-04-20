@@ -37,9 +37,6 @@ int main() {
     Text text;
     Text dijKey;
 
-    cout<< "printing sizes of elements " << endl;
-    cout << "predefined buttons x:" << gui.sprites["PDF1"].getTexture()->getSize().x * gui.sprites["PDF1"].getScale().x<< " y: " << gui.sprites["PDF1"].getTexture()->getSize().y * gui.sprites["PDF1"].getScale().y<< endl;
-    cout << "run/enter buttons x:" << gui.sprites["clear"].getTexture()->getSize().x * gui.sprites["clear"].getScale().x<< " y: " << gui.sprites["clear"].getTexture()->getSize().y * gui.sprites["clear"].getScale().y<< endl;
     while (window.isOpen()) {
         sf::Event event;
 

@@ -195,7 +195,11 @@ void GUI::drawText(RenderWindow& window, Field& field, Text& text, Font& font){
     text.setFont(font);
     string display = "test";
     text.setString("Dijkstra's Algorithm: \n"
-                   "    Time taken: " + to_string(field.dijkTime) +" microseconds"); //fixme get input it can handle from timing/field.cpp
+                   "    Time taken: " + to_string(field.dijkTime) +" microseconds" + "\n" +
+  "    Length of Path: " + to_string(field.dijkLength)+ " \n" + "Breadth First Search: \n" +
+  "    Time taken: " + to_string(field.breadthTime) + " microseconds \n" + "    Length of Path: " + to_string(field.breadthLength) +
+  "\n" + "Depth First Search: \n" + "    Time taken: " + to_string(field.depthTime) + " microseconds " + "\n"
+   "    Length of Path: " + to_string(field.depthLength));
     text.setCharacterSize(45);
     text.setPosition(1350, 310);
     text.setColor(Color::White);
